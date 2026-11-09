@@ -1,0 +1,56 @@
+
+domains:
+
+  cryptography:
+    enabled: true
+    priority: high
+    subtopics:
+      - post_quantum_cryptography
+      - zero_knowledge_proofs
+      - multi_party_computation
+      - homomorphic_encryption
+      - elliptic_curve_cryptography
+      - digital_signatures
+      - cryptographic_protocols
+      - key_management
+
+  payment_security:
+    enabled: true
+    priority: high
+    subtopics:
+      - upi_security
+      - payment_tokenization
+      - payment_cryptography
+      - secure_authentication
+      - transaction_security
+      - payment_fraud_prevention
+
+  fintech_regulation:
+    enabled: true
+    priority: high
+    subtopics:
+      - npci_updates
+      - rbi_circulars
+      - digital_payment_regulations
+      - financial_data_protection
+      - payment_system_guidelines
+
+  cybersecurity:
+    enabled: true
+    priority: medium
+    subtopics:
+      - cryptographic_vulnerabilities
+      - security_advisories
+      - encryption_attacks
+      - identity_and_access_management
+      - financial_data_breaches
+
+content_preferences:
+  research_papers: true
+  industry_news: true
+  official_announcements: true
+  technical_explainers: true
+
+newsletter:
+  max_articles: 10
+  min_relevance_score: 60

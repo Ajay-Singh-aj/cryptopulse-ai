@@ -1,0 +1,29 @@
+
+[project]
+name = "cryptopulse-ai"
+version = "0.1.0"
+description = "AI-powered cryptography and fintech intelligence newsletter"
+requires-python = ">=3.12"
+dependencies = [
+    "pydantic>=2.0",
+    "pydantic-settings>=2.0",
+    "python-dotenv",
+    "email-validator",
+    "PyYAML",
+    "langchain",
+    "langchain-core",
+    "langchain-groq",
+    "langchain-tavily",
+    "langgraph",
+    "tavily-python",
+    "arxiv",
+    "httpx",
+    "beautifulsoup4",
+    "feedparser",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+addopts = "-v"

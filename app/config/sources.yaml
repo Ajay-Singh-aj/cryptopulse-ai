@@ -1,0 +1,58 @@
+
+sources:
+
+  web_search:
+    enabled: true
+    provider: tavily
+    max_results: 5
+    search_depth: basic
+
+  research_papers:
+    enabled: true
+    providers:
+      arxiv:
+        enabled: true
+        categories:
+          - cs.CR
+          - cs.DC
+          - cs.NI
+      iacr:
+        enabled: true
+        archive: cryptology_eprint
+
+  official_standards:
+    enabled: true
+    providers:
+      nist:
+        enabled: true
+        focus:
+          - post_quantum_cryptography
+          - cryptographic_standards
+
+  security_advisories:
+    enabled: true
+    providers:
+      cert_in:
+        enabled: true
+
+  fintech:
+    enabled: true
+    providers:
+      npci:
+        enabled: true
+      rbi:
+        enabled: true
+
+source_policy:
+  prefer_primary_sources: true
+  require_original_url: true
+  verify_publication_date: true
+  exclude_unverified_claims: true
+  allow_secondary_sources: true
+```
+
+**A design decision:** Tavily is our general discovery engine, while arXiv, IACR, NIST, CERT-In, NPCI and RBI provide domain-specific information.
+
+We'll implement their actual retrieval logic later inside `tools/`.
+
+Save the file and tell me **done**.

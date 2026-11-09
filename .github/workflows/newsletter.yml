@@ -1,0 +1,82 @@
+
+name: CryptoPulse AI Newsletter
+
+on:
+  schedule:
+    # Monday, Wednesday and Friday at 11:00 AM IST (05:30 UTC)
+    - cron: "30 5 * * 1,3,5"
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cryptopulse-newsletter
+  cancel-in-progress: false
+
+jobs:
+  generate-newsletter:
+    name: Generate and Send Newsletter
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
+      - name: Create environment file
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
+          EMAIL_SENDER: ${{ secrets.EMAIL_SENDER }}
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+        run: |
+          python - <<'PY'
+          import os
+          from pathlib import Path
+
+          keys = [
+              "GROQ_API_KEY",
+              "TAVILY_API_KEY",
+              "EMAIL_SENDER",
+              "EMAIL_PASSWORD",
+          ]
+
+          missing = [key for key in keys if not os.environ.get(key)]
+          if missing:
+              raise SystemExit(
+                  "Missing GitHub Secrets: " + ", ".join(missing)
+              )
+
+          Path(".env").write_text(
+              "".join(f"{key}={os.environ[key]}\n" for key in keys),
+              encoding="utf-8",
+          )
+          PY
+
+      - name: Run tests
+        run: python -m pytest
+
+      - name: Run CryptoPulse AI
+        run: python -m scripts.run_local
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cryptopulse-logs
+          path: logs/
+          if-no-files-found: ignore
+          retention-days: 7
