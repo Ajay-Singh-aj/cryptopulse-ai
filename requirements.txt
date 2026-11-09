@@ -22,3 +22,5 @@ feedparser
 
 # Testing
 pytest
+
+tzdata
