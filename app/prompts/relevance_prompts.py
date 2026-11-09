@@ -54,11 +54,11 @@ Scoring guidance:
 
 Return ONLY valid JSON in this format:
 
-{
+{{
     "relevance_score": 85,
     "category": "cryptography",
     "reason": "Brief explanation of relevance"
-}
+}}
 
 Allowed categories:
 cryptography, payment_security,

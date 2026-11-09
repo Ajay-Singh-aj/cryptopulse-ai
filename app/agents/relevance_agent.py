@@ -15,26 +15,36 @@ def evaluate_relevance(article: Article) -> Article:
     """Evaluate an article's relevance using the LLM."""
 
     prompt = RELEVANCE_PROMPT.format(
-        title=article.title,
-        description=article.description or "",
-        source=article.source_name,
+        title=article.title[:300],
+        description=(article.description or "")[:1200],
+        source=article.source_name[:150],
     )
 
-    response = get_llm().invoke(prompt)
+    response = get_llm().invoke(
+        prompt,
+        config={"max_tokens": 300},
+    )
+
     output = response.content
 
     if not isinstance(output, str):
         raise ValueError("Unexpected LLM response format.")
 
-    # Extract JSON if the model wraps it in Markdown fences.
-    output = output.strip().removeprefix("```json").removesuffix("```").strip()
+    output = (
+        output.strip()
+        .removeprefix("```json")
+        .removesuffix("```")
+        .strip()
+    )
 
     result = json.loads(output)
 
-    score = max(0, min(100, int(result["relevance_score"])))
+    score = max(
+        0,
+        min(100, int(result["relevance_score"])),
+    )
 
-    category_value = result["category"]
-    category = ArticleCategory(category_value)
+    category = ArticleCategory(result["category"])
 
     return article.model_copy(
         update={
@@ -65,23 +75,29 @@ def filter_relevant_articles(
     if not candidates:
         return []
 
-    # Second stage: AI-based relevance evaluation.
+    # Limit the number of AI evaluations per run.
+    max_ai_evaluations = 5
     relevant_articles = []
 
-    for article in candidates:
+    for index, article in enumerate(candidates):
+        if index >= max_ai_evaluations:
+            relevant_articles.append(article)
+            continue
+
         try:
             evaluated = evaluate_relevance(article)
 
             if evaluated.relevance_score >= settings.MIN_RELEVANCE_SCORE:
                 relevant_articles.append(evaluated)
 
-        except Exception:
-            # Preserve the keyword score if AI evaluation fails.
-            logger.exception(
-                "AI relevance evaluation failed for: %s",
+        except Exception as exc:
+            logger.warning(
+                "AI relevance evaluation failed for %s: %s",
                 article.title,
+                exc,
             )
 
+            # Preserve the keyword score if AI evaluation fails.
             relevant_articles.append(article)
 
     return sorted(

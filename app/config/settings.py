@@ -53,7 +53,7 @@ class Settings(BaseSettings):
     NEWSLETTER_MINUTE: int = Field(default=0, ge=0, le=59)
     NEWSLETTER_DAYS: list[int] = [0, 2, 4]
 
-    MAX_ARTICLES_PER_NEWSLETTER: int = Field(default=10, ge=1, le=30)
+    MAX_ARTICLES_PER_NEWSLETTER: int = Field(default=1, ge=1, le=30)
     MIN_RELEVANCE_SCORE: int = Field(default=60, ge=0, le=100)
 
 
