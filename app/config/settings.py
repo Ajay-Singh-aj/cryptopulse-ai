@@ -40,6 +40,7 @@ class Settings(BaseSettings):
 
     # Database
     DATABASE_URL: str = "sqlite:///./data/cryptopulse.db"
+    DRY_RUN: bool = True
 
     # Email
     EMAIL_HOST: str = "smtp.gmail.com"
