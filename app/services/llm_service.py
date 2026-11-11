@@ -28,4 +28,6 @@ def get_llm() -> ChatGroq:
         temperature=settings.LLM_TEMPERATURE,
         max_tokens=settings.LLM_MAX_TOKENS,
         api_key=settings.GROQ_API_KEY.get_secret_value(),
+        max_retries=5,
+        timeout=60,
     )
