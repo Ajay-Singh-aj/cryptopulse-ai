@@ -42,7 +42,7 @@ jobs:
           EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           LLM_MODEL: openai/gpt-oss-120b
-          DRY_RUN: "true"
+          DRY_RUN: "false"
         run: |
           python - <<'PY'
           import os
