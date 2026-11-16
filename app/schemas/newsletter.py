@@ -1,4 +1,3 @@
-
 from datetime import date, datetime, timezone
 
 from pydantic import BaseModel, Field
@@ -30,6 +29,10 @@ class Newsletter(BaseModel):
     sections: list[NewsletterSection] = Field(default_factory=list)
 
     key_takeaways: list[str] = Field(default_factory=list)
+
+    key_findings: list[str] = Field(default_factory=list)
+
+    why_read: str | None = None
 
     total_articles: int = 0
 
