@@ -87,8 +87,9 @@ Rules:
 
         for line in output.splitlines():
             stripped = line.strip()
+            normalized_heading = stripped.strip("#*_ \\t\`").upper()
             matched = next(
-                (label for label in labels if stripped.upper() == label),
+                (label for label in labels if normalized_heading == label),
                 None,
             )
             if matched:
