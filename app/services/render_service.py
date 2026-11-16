@@ -1,4 +1,3 @@
-
 from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
@@ -21,6 +20,8 @@ def render_newsletter_html(newsletter) -> str:
         introduction=newsletter.introduction or "",
         sections=newsletter.sections,
         key_takeaways=newsletter.key_takeaways,
+        key_findings=newsletter.key_findings,
+        why_read=newsletter.why_read or "",
         issue_date=newsletter.issue_date,
         title=newsletter.title,
         total_articles=newsletter.total_articles,
