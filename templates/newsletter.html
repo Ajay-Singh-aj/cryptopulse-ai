@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,94 +5,73 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CryptoPulse AI Newsletter</title>
 </head>
-
-<body style="margin:0; padding:0; background-color:#f4f6f8; font-family:Arial,sans-serif;">
-
-    <div style="max-width:700px; margin:30px auto; background:#ffffff; border-radius:12px; overflow:hidden;">
-
-        <!-- Header -->
-        <div style="background:#111827; color:#ffffff; padding:30px; text-align:center;">
-            <h1 style="margin:0; font-size:28px;">CryptoPulse AI</h1>
-            <p style="margin:10px 0 0; color:#cbd5e1;">
-                Cryptography & FinTech Intelligence
-            </p>
+<body style="margin:0; padding:0; background-color:#f3f5f8; font-family:Arial,Helvetica,sans-serif;">
+    <div style="max-width:720px; margin:24px auto; background:#ffffff; border:1px solid #e5e7eb; border-radius:14px; overflow:hidden;">
+        <div style="background:#111827; color:#ffffff; padding:30px 28px; text-align:left;">
+            <p style="margin:0 0 8px; color:#93c5fd; font-size:11px; font-weight:bold; letter-spacing:1.5px;">CRYPTOPULSE AI • RESEARCH BRIEF</p>
+            <h1 style="margin:0; font-size:28px; line-height:1.2;">CryptoPulse AI</h1>
+            <p style="margin:9px 0 0; color:#cbd5e1; font-size:14px;">Cryptography &amp; FinTech Intelligence</p>
+            <p style="margin:18px 0 0; color:#9ca3af; font-size:12px;">{{ issue_date }} &nbsp; | &nbsp; {{ total_articles }} featured article</p>
         </div>
 
-        <!-- Newsletter Introduction -->
-        <div style="padding:30px;">
-            <h2 style="color:#111827;">Your Intelligence Briefing</h2>
-
-            <p style="color:#4b5563; line-height:1.7;">
-                {{ introduction }}
-            </p>
-
-            <hr style="border:none; border-top:1px solid #e5e7eb; margin:25px 0;">
-
-            <!-- Newsletter Sections -->
-            {% for section in sections %}
-            <div style="margin-bottom:30px;">
-
-                <h2 style="color:#1d4ed8; font-size:20px;">
-                    {{ section.title }}
-                </h2>
-
-                {% for article in section.articles %}
-                <div style="padding:15px 0; border-bottom:1px solid #e5e7eb;">
-
-                    <h3 style="color:#111827; font-size:17px;">
-                        {{ article.title }}
-                    </h3>
-
-                    <p style="color:#6b7280; font-size:13px;">
-                        Source: {{ article.source_name }}
-                    </p>
-
-                    <p style="color:#4b5563; line-height:1.7;">
-                        {{ article.summary or article.description }}
-                    </p>
-
-                    {% if article.fintech_impact %}
-                    <p style="color:#374151; line-height:1.7;">
-                        <strong>FinTech Impact:</strong>
-                        {{ article.fintech_impact }}
-                    </p>
-                    {% endif %}
-
-                    <a href="{{ article.url }}"
-                       style="color:#2563eb; text-decoration:none;">
-                        Read Original Article →
-                    </a>
-
-                </div>
-                {% endfor %}
-
-            </div>
-            {% endfor %}
-
-            <!-- Key Takeaways -->
-            {% if key_takeaways %}
-            <h2 style="color:#111827;">Key Takeaways</h2>
-
-            <ul style="color:#4b5563; line-height:1.8;">
-                {% for takeaway in key_takeaways %}
-                <li>{{ takeaway }}</li>
-                {% endfor %}
-            </ul>
+        <div style="padding:28px;">
+            <h2 style="margin:0 0 10px; color:#111827; font-size:21px;">Your Intelligence Briefing</h2>
+            {% if introduction %}
+            <p style="margin:0; color:#4b5563; line-height:1.75; font-size:15px;">{{ introduction }}</p>
             {% endif %}
 
+            <hr style="border:none; border-top:1px solid #e5e7eb; margin:24px 0;">
+
+            {% for section in sections %}
+            <div style="margin-bottom:26px;">
+                {% for article in section.articles %}
+                <div style="padding:0 0 24px; border-bottom:1px solid #e5e7eb;">
+                    <p style="margin:0 0 8px; color:#2563eb; font-size:11px; font-weight:bold; letter-spacing:1px; text-transform:uppercase;">{{ section.title }}</p>
+                    <h2 style="margin:0 0 8px; color:#111827; font-size:22px; line-height:1.35;">{{ article.title }}</h2>
+                    <p style="margin:0 0 16px; color:#6b7280; font-size:12px;">Source: {{ article.source_name }}</p>
+
+                    <div style="margin:0 0 18px; padding:16px; background:#f8fafc; border:1px solid #e5e7eb; border-radius:9px;">
+                        <h3 style="margin:0 0 10px; color:#1f2937; font-size:15px;">Key Summary</h3>
+                        {% if key_takeaways %}
+                        <ul style="margin:0; padding-left:19px; color:#374151; line-height:1.7;">
+                            {% for item in key_takeaways %}<li style="margin-bottom:5px;">{{ item }}</li>{% endfor %}
+                        </ul>
+                        {% else %}
+                        <p style="margin:0; color:#4b5563; line-height:1.7;">{{ article.summary or article.description }}</p>
+                        {% endif %}
+                    </div>
+
+                    {% if key_findings %}
+                    <div style="margin:0 0 18px;">
+                        <h3 style="margin:0 0 9px; color:#1f2937; font-size:15px;">Key Findings</h3>
+                        <ul style="margin:0; padding-left:19px; color:#4b5563; line-height:1.75;">
+                            {% for item in key_findings %}<li style="margin-bottom:5px;">{{ item }}</li>{% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+
+                    {% if article.fintech_impact %}
+                    <p style="margin:0 0 18px; color:#374151; line-height:1.7; font-size:14px;"><strong>FinTech Impact:</strong> {{ article.fintech_impact }}</p>
+                    {% endif %}
+
+                    {% if why_read %}
+                    <div style="margin:0 0 18px; padding:16px; background:#eff6ff; border-left:4px solid #2563eb; border-radius:6px;">
+                        <h3 style="margin:0 0 7px; color:#1e3a8a; font-size:15px;">Why You Should Read This</h3>
+                        <p style="margin:0; color:#334155; line-height:1.7; font-size:14px;">{{ why_read }}</p>
+                    </div>
+                    {% endif %}
+
+                    <a href="{{ article.url }}" style="display:inline-block; padding:11px 16px; background:#1d4ed8; color:#ffffff; text-decoration:none; border-radius:6px; font-size:13px; font-weight:bold;">Read Original Article &rarr;</a>
+                </div>
+                {% endfor %}
+            </div>
+            {% endfor %}
         </div>
 
-        <!-- Footer -->
-        <div style="background:#f9fafb; padding:20px; text-align:center;">
-            <p style="color:#6b7280; font-size:12px;">
-                Generated by CryptoPulse AI
-            </p>
-            <p style="color:#9ca3af; font-size:11px;">
-                Cryptography • Payment Security • FinTech • Cybersecurity
-            </p>
+        <div style="background:#f9fafb; padding:18px 24px; text-align:center; border-top:1px solid #e5e7eb;">
+            <p style="margin:0 0 5px; color:#6b7280; font-size:12px;">Generated by CryptoPulse AI</p>
+            <p style="margin:0; color:#9ca3af; font-size:11px;">Cryptography • Payment Security • FinTech • Cybersecurity</p>
         </div>
-
     </div>
-
 </body>
 </html>
