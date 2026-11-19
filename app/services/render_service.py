@@ -20,6 +20,7 @@ def render_newsletter_html(newsletter) -> str:
         introduction=newsletter.introduction or "",
         freshness_note=newsletter.freshness_note or "",
         real_world_problem=newsletter.real_world_problem or "",
+        fintech_impact=newsletter.fintech_impact or "",
         india_relevance=newsletter.india_relevance,
         authentication_factors=newsletter.authentication_factors,
         sections=newsletter.sections,
