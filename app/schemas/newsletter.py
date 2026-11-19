@@ -35,6 +35,8 @@ class Newsletter(BaseModel):
 
     real_world_problem: str | None = None
 
+    fintech_impact: str | None = None
+
     india_relevance: list[str] = Field(default_factory=list)
 
     authentication_factors: list[str] = Field(default_factory=list)
