@@ -99,11 +99,19 @@ def analyze_article(
         if retrieve_context
         else article.metadata.get("current_context", [])
     )
+    if not isinstance(current_context, list):
+        current_context = []
+    current_context = [
+        item for item in current_context
+        if isinstance(item, dict)
+        and item.get("url")
+        and _is_official_context_url(str(item.get("url")))
+    ]
     context_text = "\n\n".join(
-        f"Title: {item['title']}\n"
-        f"Published: {item['published_date'] or 'Date not supplied'}\n"
+        f"Title: {item.get('title', 'Official reference')}\n"
+        f"Published: {item.get('published_date') or 'Date not supplied'}\n"
         f"URL: {item['url']}\n"
-        f"Extract: {item['content']}"
+        f"Extract: {item.get('content', '')}"
         for item in current_context
     )
 
