@@ -1,8 +1,8 @@
-from app.agents.analysis_agent import (\n    _is_official_context_url,\n    analyze_articles,\n    retrieve_current_context,\n)
-from app.schemas.article import Article, ArticleCategory, SourceType
-
-
-def test_official_context_url_filter():
+from app.agents.analysis_agent import (
+    _is_official_context_url,
+    analyze_articles,
+    retrieve_current_context,
+)
     assert _is_official_context_url("https://www.npci.org.in/product/UPI")
     assert _is_official_context_url("https://www.rbi.org.in/Scripts/NotificationUser.aspx")
     assert not _is_official_context_url("https://example.com/npci-authentication")
