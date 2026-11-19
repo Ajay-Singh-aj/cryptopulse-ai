@@ -1,4 +1,4 @@
-from app.agents.analysis_agent import _is_official_context_url, retrieve_current_context
+from app.agents.analysis_agent import (\n    _is_official_context_url,\n    analyze_articles,\n    retrieve_current_context,\n)
 from app.schemas.article import Article, ArticleCategory, SourceType
 
 
@@ -53,3 +53,45 @@ def test_current_context_keeps_only_official_sources(monkeypatch):
     assert len(context) == 2
     assert all("example.com" not in item["url"] for item in context)
     assert context[0]["title"] == "NPCI UPI Circular"
+
+
+
+def test_only_top_ranked_article_gets_current_context_lookup(monkeypatch):
+    calls = []
+
+    def fake_analyze(article, retrieve_context=True):
+        calls.append((article.title, retrieve_context))
+        return article
+
+    monkeypatch.setattr(
+        "app.agents.analysis_agent.analyze_article",
+        fake_analyze,
+    )
+
+    lower = Article(
+        title="Lower ranked article",
+        url="https://example.com/lower",
+        source_name="Example",
+        source_type=SourceType.WEB,
+        category=ArticleCategory.CRYPTOGRAPHY,
+        relevance_score=55,
+    )
+    lead = Article(
+        title="Selected lead article",
+        url="https://example.com/lead",
+        source_name="Example",
+        source_type=SourceType.WEB,
+        category=ArticleCategory.PAYMENT_SECURITY,
+        relevance_score=95,
+    )
+
+    results = analyze_articles([lower, lead])
+
+    assert [item.title for item in results] == [
+        "Selected lead article",
+        "Lower ranked article",
+    ]
+    assert calls == [
+        ("Selected lead article", True),
+        ("Lower ranked article", False),
+    ]
