@@ -3,8 +3,14 @@ from app.agents.analysis_agent import (
     analyze_articles,
     retrieve_current_context,
 )
+from app.schemas.article import Article, ArticleCategory, SourceType
+
+
+def test_official_context_url_filter():
     assert _is_official_context_url("https://www.npci.org.in/product/UPI")
-    assert _is_official_context_url("https://www.rbi.org.in/Scripts/NotificationUser.aspx")
+    assert _is_official_context_url(
+        "https://www.rbi.org.in/Scripts/NotificationUser.aspx"
+    )
     assert not _is_official_context_url("https://example.com/npci-authentication")
     assert not _is_official_context_url("https://npci.org.in.attacker.example/fake")
 
@@ -53,7 +59,6 @@ def test_current_context_keeps_only_official_sources(monkeypatch):
     assert len(context) == 2
     assert all("example.com" not in item["url"] for item in context)
     assert context[0]["title"] == "NPCI UPI Circular"
-
 
 
 def test_only_top_ranked_article_gets_current_context_lookup(monkeypatch):
