@@ -62,7 +62,7 @@ def _section_text(output: str, labels: list[str]) -> dict[str, str]:
             buffers[current].append(line)
 
     return {
-        label: "\\n".join(lines).strip()
+        label: "\n".join(lines).strip()
         for label, lines in buffers.items()
     }
 
@@ -146,13 +146,13 @@ def generate_newsletter(articles: list[Article]) -> Newsletter:
     current_date = get_current_date().isoformat()
     authentication_related, india_payment_related = _topic_flags(selected_articles)
 
-    article_context = "\\n\\n".join(
-        f"Title: {article.title}\\n"
-        f"Source: {article.source_name}\\n"
-        f"Published: {article.published_at or 'Date not supplied'}\\n"
-        f"URL: {article.url}\\n"
-        f"Summary: {article.summary or article.description or 'Not available'}\\n"
-        f"Fintech impact: {article.fintech_impact or 'Not specified'}\\n"
+    article_context = "\n\n".join(
+        f"Title: {article.title}\n"
+        f"Source: {article.source_name}\n"
+        f"Published: {article.published_at or 'Date not supplied'}\n"
+        f"URL: {article.url}\n"
+        f"Summary: {article.summary or article.description or 'Not available'}\n"
+        f"Fintech impact: {article.fintech_impact or 'Not specified'}\n"
         f"Official current context: "
         f"{article.metadata.get('current_context', [])}"
         for article in selected_articles
