@@ -318,13 +318,13 @@ EDITORIAL RULES:
         if not key_summary:
             key_summary = [
                 article.summary or article.description
-                for article in articles
+                for article in selected_articles
                 if article.summary or article.description
             ][:3]
         if not key_findings:
             key_findings = [
                 article.fintech_impact
-                for article in articles
+                for article in selected_articles
                 if article.fintech_impact
             ][:3]
 
