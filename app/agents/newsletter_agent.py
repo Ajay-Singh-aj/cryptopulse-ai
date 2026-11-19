@@ -22,8 +22,9 @@ AUTHENTICATION_TERMS = (
     "identity verification", "device binding",
 )
 INDIA_PAYMENT_TERMS = (
-    "india", "indian", "rbi", "npci", "upi", "rupay", "aeps",
-    "imps", "nach", "netc", "fastag", "bharat billpay",
+    "rbi", "npci", "upi", "rupay", "aeps", "imps", "nach",
+    "netc", "fastag", "bharat billpay", "indian payment",
+    "india payment", "digital payment in india",
 )
 
 
@@ -132,9 +133,18 @@ def generate_newsletter(articles: list[Article]) -> Newsletter:
     if not articles:
         return newsletter
 
+    # Generate all editorial analysis from the same lead article that will be sent.
+    selected_articles = [
+        article
+        for section in newsletter.sections
+        for article in section.articles
+    ]
+    if not selected_articles:
+        return newsletter
+
     llm = get_llm()
     current_date = get_current_date().isoformat()
-    authentication_related, india_payment_related = _topic_flags(articles)
+    authentication_related, india_payment_related = _topic_flags(selected_articles)
 
     article_context = "\\n\\n".join(
         f"Title: {article.title}\\n"
@@ -145,7 +155,7 @@ def generate_newsletter(articles: list[Article]) -> Newsletter:
         f"Fintech impact: {article.fintech_impact or 'Not specified'}\\n"
         f"Official current context: "
         f"{article.metadata.get('current_context', [])}"
-        for article in articles
+        for article in selected_articles
     )
 
     authentication_context = ""
@@ -324,7 +334,7 @@ EDITORIAL RULES:
         )
 
         references = _build_context_sources(
-            articles,
+            selected_articles,
             authentication_related,
             india_payment_related,
         )
