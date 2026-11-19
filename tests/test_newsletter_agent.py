@@ -52,6 +52,7 @@ class FakeLLM:
     def invoke(self, prompt):
         assert "VERIFIED INDIA DIGITAL-PAYMENT AUTHENTICATION CONTEXT" in prompt
         assert "do not present an old circular or announcement as breaking news" in prompt
+        assert "Unselected quantum article" not in prompt
         return FakeResponse()
 
 
@@ -66,6 +67,7 @@ def test_generate_newsletter_creates_topic_specific_context_and_flow(monkeypatch
     article = Article(
         title="RBI and NPCI UPI Authentication Methods",
         url="https://example.com/upi-authentication",
+        relevance_score=95,
         source_name="Reserve Bank of India",
         source_type=SourceType.OFFICIAL_ANNOUNCEMENT,
         category=ArticleCategory.PAYMENT_SECURITY,
@@ -81,7 +83,17 @@ def test_generate_newsletter_creates_topic_specific_context_and_flow(monkeypatch
         },
     )
 
-    newsletter = generate_newsletter([article])
+    secondary_article = Article(
+        title="Unselected quantum article",
+        url="https://example.com/quantum",
+        source_name="Example Research",
+        source_type=SourceType.RESEARCH_PAPER,
+        category=ArticleCategory.CRYPTOGRAPHY,
+        description="A separate quantum cryptography topic.",
+        relevance_score=60,
+    )
+
+    newsletter = generate_newsletter([secondary_article, article])
 
     assert "merchant payment" in newsletter.real_world_problem
     assert any("UPI:" in item for item in newsletter.india_relevance)
