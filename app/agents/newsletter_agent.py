@@ -286,7 +286,6 @@ EDITORIAL RULES:
             "KEY SUMMARY:",
             "KEY FINDINGS:",
             "AUTHENTICATION FACTORS:",
-            "FINTECH IMPACT:",
             "TECHNICAL FLOW TITLE:",
             "TECHNICAL FLOW STEPS:",
             "WHY YOU SHOULD READ THIS:",
