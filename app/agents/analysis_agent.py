@@ -88,10 +88,17 @@ def retrieve_current_context(article: Article) -> list[dict]:
         return []
 
 
-def analyze_article(article: Article) -> Article:
+def analyze_article(
+    article: Article,
+    retrieve_context: bool = True,
+) -> Article:
     """Generate a concise summary, impact analysis, and current-source context."""
 
-    current_context = retrieve_current_context(article)
+    current_context = (
+        retrieve_current_context(article)
+        if retrieve_context
+        else article.metadata.get("current_context", [])
+    )
     context_text = "\n\n".join(
         f"Title: {item['title']}\n"
         f"Published: {item['published_date'] or 'Date not supplied'}\n"
@@ -163,10 +170,19 @@ def analyze_articles(articles: list[Article]) -> list[Article]:
     """Analyze a collection of articles."""
 
     analyzed_articles = []
+    ordered_articles = sorted(
+        articles,
+        key=lambda item: item.relevance_score,
+        reverse=True,
+    )
 
-    for article in articles:
+    for index, article in enumerate(ordered_articles):
         try:
-            analyzed_articles.append(analyze_article(article))
+            # The top-ranked article is the one sent in this one-article issue.
+            # Spend the current-context search budget on that article only.
+            analyzed_articles.append(
+                analyze_article(article, retrieve_context=(index == 0))
+            )
         except Exception:
             # Preserve the article if AI analysis fails.
             analyzed_articles.append(article)
